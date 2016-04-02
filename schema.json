@@ -1,0 +1,1947 @@
+{
+  "definitions": {
+    "Address": {
+      "properties": {
+        "address1": {
+          "contentType": "",
+          "default": "",
+          "format": "",
+          "type": "string"
+        },
+        "address2": {
+          "indexed": true,
+          "type": "string"
+        },
+        "addressHas": {
+          "$link": "#/definitions/AddressHASCountry",
+          "$ref": "#/definitions/Country",
+          "type": "object"
+        },
+        "city": {
+          "indexed": true,
+          "type": "string"
+        },
+        "company": {
+          "indexed": true,
+          "type": "string"
+        },
+        "country": {
+          "indexed": true,
+          "type": "string"
+        },
+        "first_name": {
+          "indexed": true,
+          "type": "string"
+        },
+        "hasAddress": {
+          "$link": "#/definitions/CustomerHASAddress",
+          "items": {
+            "$ref": "#/definitions/Customer"
+          },
+          "type": "array"
+        },
+        "last_name": {
+          "indexed": true,
+          "type": "string"
+        },
+        "name": {
+          "indexed": true,
+          "type": "string"
+        },
+        "phone": {
+          "indexed": true,
+          "type": "string"
+        },
+        "province": {
+          "indexed": true,
+          "type": "string"
+        },
+        "zip": {
+          "indexed": true,
+          "type": "string"
+        }
+      },
+      "required": [
+        "address1"
+      ],
+      "type": "object",
+      "views": {
+        "ui": [
+          "address1",
+          "address2",
+          "city",
+          "company",
+          "country",
+          "first_name",
+          "last_name",
+          "name",
+          "phone",
+          "province",
+          "zip"
+        ]
+      }
+    },
+    "AddressBilling": {
+      "$extends": "#/definitions/Address",
+      "properties": {
+        "hasAddressBilling": {
+          "$link": "#/definitions/OrderHASAddressBilling",
+          "items": {
+            "$ref": "#/definitions/Order"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "AddressHASCountry": {
+      "$source": "#/definitions/Address",
+      "$target": "#/definitions/Country",
+      "cardinality": "ManyToOne",
+      "rel": "HAS",
+      "sourceName": "hasCountry",
+      "targetName": "addressHas",
+      "type": "object"
+    },
+    "AddressShipping": {
+      "$extends": "#/definitions/Address",
+      "properties": {
+        "hasAddressShipping": {
+          "$link": "#/definitions/OrderHASAddressShipping",
+          "items": {
+            "$ref": "#/definitions/Order"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "Blog": {
+      "properties": {
+        "blogHas": {
+          "$link": "#/definitions/BlogHASBlogPost",
+          "items": {
+            "$ref": "#/definitions/BlogPost"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "BlogHASBlogPost": {
+      "$source": "#/definitions/Blog",
+      "$target": "#/definitions/BlogPost",
+      "rel": "HAS",
+      "sourceName": "hasBlogPosts",
+      "targetName": "blogHas",
+      "type": "object"
+    },
+    "BlogPost": {
+      "$extends": "#/definitions/UserContent",
+      "properties": {
+        "blogPostHas": {
+          "$link": "#/definitions/BlogPostHASComment",
+          "items": {
+            "$ref": "#/definitions/Comment"
+          },
+          "type": "array"
+        },
+        "hasBlogPosts": {
+          "$link": "#/definitions/BlogHASBlogPost",
+          "items": {
+            "$ref": "#/definitions/Blog"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "BlogPostHASComment": {
+      "$source": "#/definitions/BlogPost",
+      "$target": "#/definitions/Comment",
+      "rel": "HAS",
+      "sourceName": "hasComments",
+      "targetName": "blogPostHas",
+      "type": "object"
+    },
+    "Cart": {
+      "properties": {
+        "hasCarts": {
+          "$link": "#/definitions/CustomerHASCart",
+          "items": {
+            "$ref": "#/definitions/Customer"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "Collect": {
+      "properties": {
+        "collectHas": {
+          "$link": "#/definitions/CollectHASCustomCollection",
+          "items": {
+            "$ref": "#/definitions/CustomCollection"
+          },
+          "type": "array"
+        },
+        "hasCollects": {
+          "$link": "#/definitions/MetaProductHASCollect",
+          "$ref": "#/definitions/MetaProduct",
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "CollectHASCustomCollection": {
+      "$source": "#/definitions/Collect",
+      "$target": "#/definitions/CustomCollection",
+      "cardinality": "OneToMany",
+      "rel": "HAS",
+      "sourceName": "hasCustomCollections",
+      "targetName": "collectHas",
+      "type": "object"
+    },
+    "Comment": {
+      "$extends": "#/definitions/UserContent",
+      "properties": {
+        "hasComments": {
+          "$link": "#/definitions/BlogPostHASComment",
+          "items": {
+            "$ref": "#/definitions/BlogPost"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "Country": {
+      "properties": {
+        "countryHas": {
+          "$link": "#/definitions/CountryHASProvince",
+          "items": {
+            "$ref": "#/definitions/Province"
+          },
+          "type": "array"
+        },
+        "hasCountry": {
+          "$link": "#/definitions/AddressHASCountry",
+          "items": {
+            "$ref": "#/definitions/Address"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "CountryHASProvince": {
+      "$source": "#/definitions/Country",
+      "$target": "#/definitions/Province",
+      "cardinality": "OneToMany",
+      "rel": "HAS",
+      "sourceName": "hasProvinces",
+      "targetName": "countryHas",
+      "type": "object"
+    },
+    "CustomCollection": {
+      "properties": {
+        "hasCustomCollections": {
+          "$link": "#/definitions/CollectHASCustomCollection",
+          "$ref": "#/definitions/Collect",
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "Customer": {
+      "$extends": "#/definitions/Person",
+      "properties": {
+        "customerHas": {
+          "$link": "#/definitions/CustomerHASAddress",
+          "items": {
+            "$ref": "#/definitions/Address"
+          },
+          "type": "array"
+        },
+        "customerHasIn": {
+          "$link": "#/definitions/CustomerHASCart",
+          "items": {
+            "$ref": "#/definitions/Cart"
+          },
+          "type": "array"
+        },
+        "customerPlaced": {
+          "$link": "#/definitions/CustomerPLACEDOrder",
+          "items": {
+            "$ref": "#/definitions/Order"
+          },
+          "type": "array"
+        },
+        "hasCustomers": {
+          "$link": "#/definitions/ShopHASCustomer",
+          "items": {
+            "$ref": "#/definitions/Shop"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "CustomerHASAddress": {
+      "$source": "#/definitions/Customer",
+      "$target": "#/definitions/Address",
+      "rel": "HAS",
+      "sourceName": "hasAddress",
+      "targetName": "customerHas",
+      "type": "object"
+    },
+    "CustomerHASCart": {
+      "$source": "#/definitions/Customer",
+      "$target": "#/definitions/Cart",
+      "rel": "HAS",
+      "sourceName": "hasCarts",
+      "targetName": "customerHasIn",
+      "type": "object"
+    },
+    "CustomerPLACEDOrder": {
+      "$source": "#/definitions/Customer",
+      "$target": "#/definitions/Order",
+      "cardinality": "OneToMany",
+      "rel": "PLACED",
+      "sourceName": "placedOrders",
+      "targetName": "customerPlaced",
+      "type": "object"
+    },
+    "DataFeed": {
+      "$extends": "https://structr.org/v1.1/definitions/DataFeed",
+      "type": "object"
+    },
+    "DiscountCode": {
+      "properties": {
+        "amount": {
+          "indexed": true,
+          "type": "number"
+        },
+        "calc_type": {
+          "enum": [
+            "dollar",
+            "flat",
+            "percentage"
+          ],
+          "indexed": true,
+          "type": "string"
+        },
+        "code": {
+          "indexed": true,
+          "type": "string"
+        },
+        "hasDiscountCodes": {
+          "$link": "#/definitions/OrderHASDiscountCode",
+          "items": {
+            "$ref": "#/definitions/Order"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object",
+      "views": {
+        "ui": [
+          "amount",
+          "calc_type",
+          "code"
+        ]
+      }
+    },
+    "FeedItem": {
+      "$extends": "https://structr.org/v1.1/definitions/FeedItem",
+      "type": "object"
+    },
+    "FeedItemContent": {
+      "$extends": "https://structr.org/v1.1/definitions/FeedItemContent",
+      "type": "object"
+    },
+    "FeedItemEnclosure": {
+      "$extends": "https://structr.org/v1.1/definitions/FeedItemEnclosure",
+      "type": "object"
+    },
+    "File": {
+      "$extends": "https://structr.org/v1.1/definitions/FileBase",
+      "type": "object"
+    },
+    "Folder": {
+      "$extends": "https://structr.org/v1.1/definitions/Folder",
+      "type": "object"
+    },
+    "Fulfillment": {
+      "properties": {
+        "created_at": {
+          "format": "date-time",
+          "indexed": true,
+          "type": "string"
+        },
+        "ext_id": {
+          "indexed": true,
+          "type": "string"
+        },
+        "fulfillmentHas": {
+          "$link": "#/definitions/FulfillmentHASFulfillmentEvent",
+          "items": {
+            "$ref": "#/definitions/FulfillmentEvent"
+          },
+          "type": "array"
+        },
+        "fulfillmentHasIn": {
+          "$link": "#/definitions/FulfillmentHASFulfillmentReceipt",
+          "$ref": "#/definitions/FulfillmentReceipt",
+          "type": "object"
+        },
+        "hasFulfillments": {
+          "$link": "#/definitions/OrderHASFulfillment",
+          "$ref": "#/definitions/Order",
+          "type": "object"
+        },
+        "order_id": {
+          "default": "",
+          "indexed": true,
+          "readFunction": "",
+          "type": "function"
+        },
+        "receipt": {
+          "$ref": "#/definitions/Fulfillment/properties/hasFulfillmentReceipt",
+          "default": "",
+          "indexed": true,
+          "properties": [
+            "authorizationProperty",
+            "testcaseProperty"
+          ],
+          "type": "object"
+        },
+        "service": {
+          "enum": [
+            "manual"
+          ],
+          "indexed": true,
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "failure",
+            "success"
+          ],
+          "indexed": true,
+          "type": "string"
+        },
+        "tracking_company": {
+          "indexed": true,
+          "type": "string"
+        },
+        "tracking_number": {
+          "indexed": true,
+          "type": "string"
+        },
+        "tracking_numbers": {
+          "indexed": true,
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "tracking_url": {
+          "indexed": true,
+          "type": "string"
+        },
+        "tracking_urls": {
+          "indexed": true,
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "indexed": true,
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "views": {
+        "ui": [
+          "created_at",
+          "ext_id",
+          "order_id",
+          "receipt",
+          "service",
+          "status",
+          "tracking_company",
+          "tracking_number",
+          "tracking_numbers",
+          "tracking_url",
+          "tracking_urls",
+          "updated_at"
+        ]
+      }
+    },
+    "FulfillmentEvent": {
+      "$extends": "#/definitions/ShopEvent",
+      "properties": {
+        "hasFulfillmentEvents": {
+          "$link": "#/definitions/FulfillmentHASFulfillmentEvent",
+          "$ref": "#/definitions/Fulfillment",
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "FulfillmentHASFulfillmentEvent": {
+      "$source": "#/definitions/Fulfillment",
+      "$target": "#/definitions/FulfillmentEvent",
+      "cardinality": "OneToMany",
+      "rel": "HAS",
+      "sourceName": "hasFulfillmentEvents",
+      "targetName": "fulfillmentHas",
+      "type": "object"
+    },
+    "FulfillmentHASFulfillmentReceipt": {
+      "$source": "#/definitions/Fulfillment",
+      "$target": "#/definitions/FulfillmentReceipt",
+      "cardinality": "OneToOne",
+      "rel": "HAS",
+      "sourceName": "hasFulfillmentReceipt",
+      "targetName": "fulfillmentHasIn",
+      "type": "object"
+    },
+    "FulfillmentReceipt": {
+      "properties": {
+        "authorization": {
+          "indexed": true,
+          "type": "string"
+        },
+        "hasFulfillmentReceipt": {
+          "$link": "#/definitions/FulfillmentHASFulfillmentReceipt",
+          "$ref": "#/definitions/Fulfillment",
+          "type": "object"
+        },
+        "testcase": {
+          "indexed": true,
+          "type": "boolean"
+        }
+      },
+      "type": "object",
+      "views": {
+        "ui": [
+          "authorization",
+          "testcase"
+        ]
+      }
+    },
+    "FulfillmentService": {
+      "properties": {
+        "usesFulfillmentService": {
+          "$link": "#/definitions/MetaProductUSESFulfillmentService",
+          "items": {
+            "$ref": "#/definitions/MetaProduct"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "Group": {
+      "$extends": "https://structr.org/v1.1/definitions/Group",
+      "type": "object"
+    },
+    "Image": {
+      "$extends": "https://structr.org/v1.1/definitions/Image",
+      "type": "object"
+    },
+    "LoggedEvent": {
+      "type": "object"
+    },
+    "MailTemplate": {
+      "$extends": "https://structr.org/v1.1/definitions/MailTemplate",
+      "type": "object"
+    },
+    "MetaProduct": {
+      "properties": {
+        "images": {
+          "indexed": true,
+          "items": {
+            "$ref": "#/definitions/MetaProduct/properties/hasProductImages"
+          },
+          "properties": [
+            "id"
+          ],
+          "type": "array"
+        },
+        "metaProductHas": {
+          "$link": "#/definitions/MetaProductHASCollect",
+          "items": {
+            "$ref": "#/definitions/Collect"
+          },
+          "type": "array"
+        },
+        "metaProductHasIn": {
+          "$link": "#/definitions/MetaProductHASProductImage",
+          "items": {
+            "$ref": "#/definitions/ProductImage"
+          },
+          "type": "array"
+        },
+        "metaProductHasIn1": {
+          "$link": "#/definitions/MetaProductHASReview",
+          "items": {
+            "$ref": "#/definitions/Review"
+          },
+          "type": "array"
+        },
+        "metaProductUses": {
+          "$link": "#/definitions/MetaProductUSESFulfillmentService",
+          "$ref": "#/definitions/FulfillmentService",
+          "type": "object"
+        }
+      },
+      "type": "object",
+      "views": {
+        "ui": [
+          "images"
+        ]
+      }
+    },
+    "MetaProductHASCollect": {
+      "$source": "#/definitions/MetaProduct",
+      "$target": "#/definitions/Collect",
+      "cardinality": "OneToMany",
+      "rel": "HAS",
+      "sourceName": "hasCollects",
+      "targetName": "metaProductHas",
+      "type": "object"
+    },
+    "MetaProductHASProductImage": {
+      "$source": "#/definitions/MetaProduct",
+      "$target": "#/definitions/ProductImage",
+      "cardinality": "OneToMany",
+      "rel": "HAS",
+      "sourceName": "hasProductImages",
+      "targetName": "metaProductHasIn",
+      "type": "object"
+    },
+    "MetaProductHASReview": {
+      "$source": "#/definitions/MetaProduct",
+      "$target": "#/definitions/Review",
+      "cardinality": "OneToMany",
+      "rel": "HAS",
+      "sourceName": "hasReviews",
+      "targetName": "metaProductHasIn1",
+      "type": "object"
+    },
+    "MetaProductUSESFulfillmentService": {
+      "$source": "#/definitions/MetaProduct",
+      "$target": "#/definitions/FulfillmentService",
+      "cardinality": "ManyToOne",
+      "rel": "USES",
+      "sourceName": "usesFulfillmentService",
+      "targetName": "metaProductUses",
+      "type": "object"
+    },
+    "Order": {
+      "properties": {
+        "billing_address": {
+          "$ref": "#/definitions/Order/properties/hasAddressBilling",
+          "default": "",
+          "properties": [
+            "address1Property",
+            "address2Property",
+            "cityProperty",
+            "companyProperty",
+            "countryProperty",
+            "first_nameProperty",
+            "id",
+            "last_nameProperty",
+            "name",
+            "phoneProperty",
+            "provinceProperty",
+            "zipProperty"
+          ],
+          "type": "object"
+        },
+        "browser_ip": {
+          "contentType": "",
+          "default": "",
+          "format": "",
+          "type": "string"
+        },
+        "buyer_accepts_marketing": {
+          "indexed": true,
+          "type": "boolean"
+        },
+        "cancelled_at": {
+          "format": "date-time",
+          "indexed": true,
+          "type": "string"
+        },
+        "cancelled_reason": {
+          "indexed": true,
+          "type": "string"
+        },
+        "cart_token": {
+          "indexed": true,
+          "type": "string"
+        },
+        "checkout_id": {
+          "indexed": true,
+          "type": "string"
+        },
+        "checkout_token": {
+          "indexed": true,
+          "type": "string"
+        },
+        "clientDetails": {
+          "contentType": "application/json",
+          "default": "",
+          "format": "",
+          "type": "string"
+        },
+        "closed_at": {
+          "format": "date-time",
+          "indexed": true,
+          "type": "string"
+        },
+        "confirmed": {
+          "indexed": true,
+          "type": "boolean"
+        },
+        "contact_email": {
+          "contentType": "",
+          "default": "",
+          "format": "",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "indexed": true,
+          "type": "string"
+        },
+        "currency": {
+          "enum": [
+            "CAD",
+            "EUR",
+            "USD"
+          ],
+          "indexed": true,
+          "type": "string"
+        },
+        "device_id": {
+          "indexed": true,
+          "type": "string"
+        },
+        "discount_codes": {
+          "default": "",
+          "indexed": true,
+          "items": {
+            "$ref": "#/definitions/Order/properties/hasDiscountCodes"
+          },
+          "properties": [
+            "amountProperty",
+            "calc_typeProperty",
+            "codeProperty"
+          ],
+          "type": "array"
+        },
+        "email": {
+          "indexed": true,
+          "type": "string"
+        },
+        "ext_id": {
+          "indexed": true,
+          "type": "string"
+        },
+        "financial_status": {
+          "enum": [
+            "authorized"
+          ],
+          "indexed": true,
+          "type": "string"
+        },
+        "fulfillment_status": {
+          "indexed": true,
+          "type": "string"
+        },
+        "fulfillments": {
+          "default": "",
+          "indexed": true,
+          "items": {
+            "$ref": "#/definitions/Order/properties/hasFulfillments"
+          },
+          "properties": [
+            "created_atProperty",
+            "ext_idProperty",
+            "order_idProperty",
+            "receiptProperty",
+            "statusProperty",
+            "tracking_companyProperty",
+            "tracking_numberProperty",
+            "tracking_numbersProperty",
+            "tracking_urlProperty",
+            "tracking_urlsProperty",
+            "updated_atProperty"
+          ],
+          "type": "array"
+        },
+        "gateway": {
+          "indexed": true,
+          "type": "string"
+        },
+        "hasOrders": {
+          "$link": "#/definitions/ShopHASOrder",
+          "items": {
+            "$ref": "#/definitions/Shop"
+          },
+          "type": "array"
+        },
+        "landing_site": {
+          "indexed": true,
+          "type": "string"
+        },
+        "landing_site_ref": {
+          "indexed": true,
+          "type": "string"
+        },
+        "line_items": {
+          "indexed": true,
+          "items": {
+            "$ref": "#/definitions/Order/properties/hasOrderLineItems"
+          },
+          "properties": [
+            "id"
+          ],
+          "type": "array"
+        },
+        "location_id": {
+          "indexed": true,
+          "type": "string"
+        },
+        "note": {
+          "indexed": true,
+          "type": "string"
+        },
+        "note_attributes": {
+          "indexed": true,
+          "items": {
+            "$ref": "#/definitions/Order/properties/hasOrderNotes"
+          },
+          "properties": [
+            "name",
+            "valueProperty"
+          ],
+          "type": "array"
+        },
+        "number": {
+          "indexed": true,
+          "type": "long"
+        },
+        "orderHas": {
+          "$link": "#/definitions/OrderHASAddressBilling",
+          "$ref": "#/definitions/AddressBilling",
+          "type": "object"
+        },
+        "orderHasIn": {
+          "$link": "#/definitions/OrderHASAddressShipping",
+          "$ref": "#/definitions/AddressShipping",
+          "type": "object"
+        },
+        "orderHasIn1": {
+          "$link": "#/definitions/OrderHASDiscountCode",
+          "items": {
+            "$ref": "#/definitions/DiscountCode"
+          },
+          "type": "array"
+        },
+        "orderHasIn12": {
+          "$link": "#/definitions/OrderHASFulfillment",
+          "items": {
+            "$ref": "#/definitions/Fulfillment"
+          },
+          "type": "array"
+        },
+        "orderHasIn123": {
+          "$link": "#/definitions/OrderHASOrderLineItem",
+          "items": {
+            "$ref": "#/definitions/OrderLineItem"
+          },
+          "type": "array"
+        },
+        "orderHasIn1234": {
+          "$link": "#/definitions/OrderHASOrderNote",
+          "items": {
+            "$ref": "#/definitions/OrderNote"
+          },
+          "type": "array"
+        },
+        "orderHasIn12345": {
+          "$link": "#/definitions/OrderHASOrderTaxCalculation",
+          "items": {
+            "$ref": "#/definitions/OrderTaxCalculation"
+          },
+          "type": "array"
+        },
+        "order_number": {
+          "indexed": true,
+          "type": "integer"
+        },
+        "payment_gateway_names": {
+          "indexed": true,
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "placedOrders": {
+          "$link": "#/definitions/CustomerPLACEDOrder",
+          "$ref": "#/definitions/Customer",
+          "type": "object"
+        },
+        "processed_at": {
+          "format": "date-time",
+          "indexed": true,
+          "type": "string"
+        },
+        "processing_method": {
+          "indexed": true,
+          "type": "string"
+        },
+        "reference": {
+          "indexed": true,
+          "type": "string"
+        },
+        "referring_site": {
+          "indexed": true,
+          "type": "boolean"
+        },
+        "shipping_address": {
+          "$ref": "#/definitions/Order/properties/hasAddressShipping",
+          "indexed": true,
+          "properties": [
+            "address1Property",
+            "address2Property",
+            "cityProperty",
+            "companyProperty",
+            "countryProperty",
+            "first_nameProperty",
+            "id",
+            "last_nameProperty",
+            "name",
+            "phoneProperty",
+            "provinceProperty",
+            "zipProperty"
+          ],
+          "type": "object"
+        },
+        "shipping_lines": {
+          "contentType": "application/json",
+          "default": "",
+          "format": "",
+          "type": "string"
+        },
+        "source_identifier": {
+          "indexed": true,
+          "type": "string"
+        },
+        "source_name": {
+          "indexed": true,
+          "type": "string"
+        },
+        "source_url": {
+          "indexed": true,
+          "type": "string"
+        },
+        "subtotal_price": {
+          "indexed": true,
+          "type": "number"
+        },
+        "tags": {
+          "indexed": true,
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "tax_lines": {
+          "default": "",
+          "format": "hasOrderTaxCalculations, titleProperty, priceProperty, rateProperty",
+          "indexed": true,
+          "type": "string"
+        },
+        "taxes_included": {
+          "indexed": true,
+          "type": "boolean"
+        },
+        "test": {
+          "indexed": true,
+          "type": "boolean"
+        },
+        "token": {
+          "indexed": true,
+          "type": "string"
+        },
+        "total_discounts": {
+          "indexed": true,
+          "type": "number"
+        },
+        "total_line_item_price": {
+          "indexed": true,
+          "type": "number"
+        },
+        "total_price": {
+          "indexed": true,
+          "type": "number"
+        },
+        "total_price_usd": {
+          "indexed": true,
+          "type": "number"
+        },
+        "total_tax": {
+          "indexed": true,
+          "type": "number"
+        },
+        "total_weight": {
+          "indexed": true,
+          "type": "number"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "indexed": true,
+          "type": "string"
+        },
+        "user_id": {
+          "indexed": true,
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "views": {
+        "ui": [
+          "billing_address",
+          "browser_ip",
+          "buyer_accepts_marketing",
+          "cancelled_at",
+          "cancelled_reason",
+          "cart_token",
+          "checkout_id",
+          "checkout_token",
+          "clientDetails",
+          "closed_at",
+          "confirmed",
+          "contact_email",
+          "created_at",
+          "currency",
+          "device_id",
+          "discount_codes",
+          "email",
+          "ext_id",
+          "financial_status",
+          "fulfillment_status",
+          "fulfillments",
+          "gateway",
+          "landing_site",
+          "landing_site_ref",
+          "line_items",
+          "location_id",
+          "note",
+          "note_attributes",
+          "number",
+          "order_number",
+          "payment_gateway_names",
+          "processed_at",
+          "processing_method",
+          "reference",
+          "referring_site",
+          "shipping_address",
+          "shipping_lines",
+          "source_identifier",
+          "source_name",
+          "source_url",
+          "subtotal_price",
+          "tags",
+          "tax_lines",
+          "taxes_included",
+          "test",
+          "token",
+          "total_discounts",
+          "total_line_item_price",
+          "total_price",
+          "total_price_usd",
+          "total_tax",
+          "total_weight",
+          "updated_at",
+          "user_id"
+        ]
+      }
+    },
+    "OrderHASAddressBilling": {
+      "$source": "#/definitions/Order",
+      "$target": "#/definitions/AddressBilling",
+      "cardinality": "ManyToOne",
+      "rel": "HAS",
+      "sourceName": "hasAddressBilling",
+      "targetName": "orderHas",
+      "type": "object"
+    },
+    "OrderHASAddressShipping": {
+      "$source": "#/definitions/Order",
+      "$target": "#/definitions/AddressShipping",
+      "cardinality": "ManyToOne",
+      "rel": "HAS",
+      "sourceName": "hasAddressShipping",
+      "targetName": "orderHasIn",
+      "type": "object"
+    },
+    "OrderHASDiscountCode": {
+      "$source": "#/definitions/Order",
+      "$target": "#/definitions/DiscountCode",
+      "rel": "HAS",
+      "sourceName": "hasDiscountCodes",
+      "targetName": "orderHasIn1",
+      "type": "object"
+    },
+    "OrderHASFulfillment": {
+      "$source": "#/definitions/Order",
+      "$target": "#/definitions/Fulfillment",
+      "cardinality": "OneToMany",
+      "rel": "HAS",
+      "sourceName": "hasFulfillments",
+      "targetName": "orderHasIn12",
+      "type": "object"
+    },
+    "OrderHASOrderLineItem": {
+      "$source": "#/definitions/Order",
+      "$target": "#/definitions/OrderLineItem",
+      "cardinality": "OneToMany",
+      "rel": "HAS",
+      "sourceName": "hasOrderLineItems",
+      "targetName": "orderHasIn123",
+      "type": "object"
+    },
+    "OrderHASOrderNote": {
+      "$source": "#/definitions/Order",
+      "$target": "#/definitions/OrderNote",
+      "cardinality": "OneToMany",
+      "rel": "HAS",
+      "sourceName": "hasOrderNotes",
+      "targetName": "orderHasIn1234",
+      "type": "object"
+    },
+    "OrderHASOrderTaxCalculation": {
+      "$source": "#/definitions/Order",
+      "$target": "#/definitions/OrderTaxCalculation",
+      "cardinality": "OneToMany",
+      "rel": "HAS",
+      "sourceName": "hasOrderTaxCalculations",
+      "targetName": "orderHasIn12345",
+      "type": "object"
+    },
+    "OrderLineItem": {
+      "properties": {
+        "ext_id": {
+          "indexed": true,
+          "type": "string"
+        },
+        "fulfillable_quantity": {
+          "indexed": true,
+          "type": "integer"
+        },
+        "fulfillment_service": {
+          "indexed": true,
+          "type": "string"
+        },
+        "fulfillment_status": {
+          "indexed": true,
+          "type": "string"
+        },
+        "gift_card": {
+          "indexed": true,
+          "type": "boolean"
+        },
+        "grams": {
+          "indexed": true,
+          "type": "integer"
+        },
+        "hasOrderLineItems": {
+          "$link": "#/definitions/OrderHASOrderLineItem",
+          "$ref": "#/definitions/Order",
+          "type": "object"
+        },
+        "orderLineItemHas": {
+          "$link": "#/definitions/OrderLineItemHASOrderLineItemProperty",
+          "items": {
+            "$ref": "#/definitions/OrderLineItemProperty"
+          },
+          "type": "array"
+        },
+        "orderLineItemHasIn": {
+          "$link": "#/definitions/OrderLineItemHASOrderLineItemTaxCalculation",
+          "items": {
+            "$ref": "#/definitions/OrderLineItemTaxCalculation"
+          },
+          "type": "array"
+        },
+        "orderLineItemHasIn1": {
+          "$link": "#/definitions/OrderLineItemHASProductVariant",
+          "$ref": "#/definitions/ProductVariant",
+          "type": "object"
+        },
+        "price": {
+          "indexed": true,
+          "type": "number"
+        },
+        "product_exists": {
+          "indexed": true,
+          "type": "boolean"
+        },
+        "product_id": {
+          "$ref": "#/definitions/OrderLineItem/properties/hasProductVariant",
+          "default": "",
+          "indexed": true,
+          "properties": [
+            "product_idProperty"
+          ],
+          "type": "object"
+        },
+        "properties": {
+          "indexed": true,
+          "items": {
+            "$ref": "#/definitions/OrderLineItem/properties/hasOrderLineItemProperties"
+          },
+          "properties": [
+            "name",
+            "valueProperty"
+          ],
+          "type": "array"
+        },
+        "quantity": {
+          "indexed": true,
+          "type": "long"
+        },
+        "requires_shipping": {
+          "indexed": true,
+          "type": "string"
+        },
+        "sku": {
+          "indexed": true,
+          "type": "string"
+        },
+        "tax_lines": {
+          "indexed": true,
+          "items": {
+            "$ref": "#/definitions/OrderLineItem/properties/hasOrderLineItemTaxCalculations"
+          },
+          "properties": [
+            "priceProperty",
+            "rateProperty",
+            "titleProperty"
+          ],
+          "type": "array"
+        },
+        "taxable": {
+          "indexed": true,
+          "type": "boolean"
+        },
+        "title": {
+          "contentType": "",
+          "default": "",
+          "format": "",
+          "type": "string"
+        },
+        "total_discount": {
+          "indexed": true,
+          "type": "number"
+        },
+        "variant_id": {
+          "$ref": "#/definitions/OrderLineItem/properties/hasProductVariant",
+          "default": "",
+          "indexed": true,
+          "properties": [
+            "id"
+          ],
+          "type": "object"
+        },
+        "variant_inventory_management": {
+          "indexed": true,
+          "readFunction": "this.hasProductVariant.inventory_managment",
+          "type": "function"
+        },
+        "variant_title": {
+          "$ref": "#/definitions/OrderLineItem/properties/hasProductVariant",
+          "default": "",
+          "properties": [
+            "titleProperty"
+          ],
+          "type": "object"
+        },
+        "vendor": {
+          "indexed": true,
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "views": {
+        "ui": [
+          "ext_id",
+          "fulfillable_quantity",
+          "fulfillment_service",
+          "fulfillment_status",
+          "gift_card",
+          "grams",
+          "price",
+          "product_exists",
+          "product_id",
+          "properties",
+          "quantity",
+          "requires_shipping",
+          "sku",
+          "tax_lines",
+          "taxable",
+          "title",
+          "total_discount",
+          "variant_id",
+          "variant_inventory_management",
+          "variant_title",
+          "vendor"
+        ]
+      }
+    },
+    "OrderLineItemHASOrderLineItemProperty": {
+      "$source": "#/definitions/OrderLineItem",
+      "$target": "#/definitions/OrderLineItemProperty",
+      "cardinality": "OneToMany",
+      "rel": "HAS",
+      "sourceName": "hasOrderLineItemProperties",
+      "targetName": "orderLineItemHas",
+      "type": "object"
+    },
+    "OrderLineItemHASOrderLineItemTaxCalculation": {
+      "$source": "#/definitions/OrderLineItem",
+      "$target": "#/definitions/OrderLineItemTaxCalculation",
+      "cardinality": "OneToMany",
+      "rel": "HAS",
+      "sourceName": "hasOrderLineItemTaxCalculations",
+      "targetName": "orderLineItemHasIn",
+      "type": "object"
+    },
+    "OrderLineItemHASProductVariant": {
+      "$source": "#/definitions/OrderLineItem",
+      "$target": "#/definitions/ProductVariant",
+      "cardinality": "ManyToOne",
+      "rel": "HAS",
+      "sourceName": "hasProductVariant",
+      "targetName": "orderLineItemHasIn1",
+      "type": "object"
+    },
+    "OrderLineItemProperty": {
+      "properties": {
+        "hasOrderLineItemProperties": {
+          "$link": "#/definitions/OrderLineItemHASOrderLineItemProperty",
+          "$ref": "#/definitions/OrderLineItem",
+          "type": "object"
+        },
+        "value": {
+          "indexed": true,
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "views": {
+        "ui": [
+          "value"
+        ]
+      }
+    },
+    "OrderLineItemTaxCalculation": {
+      "$extends": "#/definitions/TaxCalculation",
+      "properties": {
+        "hasOrderLineItemTaxCalculations": {
+          "$link": "#/definitions/OrderLineItemHASOrderLineItemTaxCalculation",
+          "$ref": "#/definitions/OrderLineItem",
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "OrderNote": {
+      "properties": {
+        "hasOrderNotes": {
+          "$link": "#/definitions/OrderHASOrderNote",
+          "$ref": "#/definitions/Order",
+          "type": "object"
+        },
+        "value": {
+          "indexed": true,
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "views": {
+        "ui": [
+          "value"
+        ]
+      }
+    },
+    "OrderTaxCalculation": {
+      "$extends": "#/definitions/TaxCalculation",
+      "properties": {
+        "hasOrderTaxCalculations": {
+          "$link": "#/definitions/OrderHASOrderTaxCalculation",
+          "$ref": "#/definitions/Order",
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "Page": {
+      "$extends": "https://structr.org/v1.1/definitions/Page",
+      "type": "object"
+    },
+    "Person": {
+      "properties": {
+        "personWrote": {
+          "$link": "#/definitions/PersonWROTEUserContent",
+          "items": {
+            "$ref": "#/definitions/UserContent"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "PersonWROTEUserContent": {
+      "$source": "#/definitions/Person",
+      "$target": "#/definitions/UserContent",
+      "cardinality": "OneToMany",
+      "rel": "WROTE",
+      "sourceName": "wroteUserContents",
+      "targetName": "personWrote",
+      "type": "object"
+    },
+    "Product": {
+      "$extends": "#/definitions/MetaProduct",
+      "properties": {
+        "body_html": {
+          "contentType": "text/html",
+          "default": "",
+          "format": "",
+          "type": "string"
+        },
+        "created_at": {
+          "contentType": "",
+          "datePattern": "",
+          "default": "",
+          "format": "date-time",
+          "type": "string"
+        },
+        "ext_id": {
+          "indexed": true,
+          "type": "string"
+        },
+        "handle": {
+          "indexed": true,
+          "type": "string"
+        },
+        "hasProducts": {
+          "$link": "#/definitions/ShopHASProduct",
+          "items": {
+            "$ref": "#/definitions/Shop"
+          },
+          "type": "array"
+        },
+        "metafields_global_description_tag": {
+          "indexed": true,
+          "type": "string"
+        },
+        "metafields_global_title_tag": {
+          "indexed": true,
+          "type": "string"
+        },
+        "options": {
+          "indexed": true,
+          "type": "string"
+        },
+        "productHas": {
+          "$link": "#/definitions/ProductHASProductOptions",
+          "items": {
+            "$ref": "#/definitions/ProductOptions"
+          },
+          "type": "array"
+        },
+        "productHasIn": {
+          "$link": "#/definitions/ProductHASProductVariant",
+          "items": {
+            "$ref": "#/definitions/ProductVariant"
+          },
+          "type": "array"
+        },
+        "product_type": {
+          "indexed": true,
+          "type": "string"
+        },
+        "published_at": {
+          "datePattern": "",
+          "default": "",
+          "format": "date-time",
+          "indexed": true,
+          "type": "string"
+        },
+        "published_scope": {
+          "indexed": true,
+          "type": "string"
+        },
+        "tags": {
+          "indexed": true,
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "texplate_suffix": {
+          "indexed": true,
+          "type": "string"
+        },
+        "title": {
+          "indexed": true,
+          "type": "string"
+        },
+        "updated_at": {
+          "contentType": "",
+          "datePattern": "",
+          "default": "",
+          "format": "date-time",
+          "type": "string"
+        },
+        "variants": {
+          "indexed": true,
+          "items": {
+            "$ref": "#/definitions/Product/properties/hasProductVariants"
+          },
+          "properties": [
+            "id"
+          ],
+          "type": "array"
+        },
+        "vendor": {
+          "indexed": true,
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "views": {
+        "ui": [
+          "body_html",
+          "created_at",
+          "ext_id",
+          "handle",
+          "metafields_global_description_tag",
+          "metafields_global_title_tag",
+          "options",
+          "product_type",
+          "published_at",
+          "published_scope",
+          "tags",
+          "texplate_suffix",
+          "title",
+          "updated_at",
+          "variants",
+          "vendor"
+        ]
+      }
+    },
+    "ProductHASProductOptions": {
+      "$source": "#/definitions/Product",
+      "$target": "#/definitions/ProductOptions",
+      "cardinality": "OneToMany",
+      "rel": "HAS",
+      "sourceName": "hasProductOptions",
+      "targetName": "productHas",
+      "type": "object"
+    },
+    "ProductHASProductVariant": {
+      "$source": "#/definitions/Product",
+      "$target": "#/definitions/ProductVariant",
+      "cardinality": "OneToMany",
+      "rel": "HAS",
+      "sourceName": "hasProductVariants",
+      "targetName": "productHasIn",
+      "type": "object"
+    },
+    "ProductImage": {
+      "properties": {
+        "hasProductImages": {
+          "$link": "#/definitions/MetaProductHASProductImage",
+          "$ref": "#/definitions/MetaProduct",
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "ProductOptions": {
+      "properties": {
+        "hasProductOptions": {
+          "$link": "#/definitions/ProductHASProductOptions",
+          "$ref": "#/definitions/Product",
+          "type": "object"
+        },
+        "value": {
+          "contentType": "application/json",
+          "default": "",
+          "format": "",
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "views": {
+        "ui": [
+          "value"
+        ]
+      }
+    },
+    "ProductVariant": {
+      "$extends": "#/definitions/MetaProduct",
+      "properties": {
+        "barcode": {
+          "indexed": true,
+          "type": "string"
+        },
+        "compare_at_price": {
+          "indexed": true,
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "indexed": true,
+          "type": "string"
+        },
+        "ext_id": {
+          "indexed": true,
+          "type": "string"
+        },
+        "fulfillment_service": {
+          "indexed": true,
+          "type": "string"
+        },
+        "gift_card": {
+          "indexed": true,
+          "type": "boolean"
+        },
+        "grams": {
+          "indexed": true,
+          "type": "integer"
+        },
+        "hasProductVariant": {
+          "$link": "#/definitions/OrderLineItemHASProductVariant",
+          "items": {
+            "$ref": "#/definitions/OrderLineItem"
+          },
+          "type": "array"
+        },
+        "hasProductVariants": {
+          "$link": "#/definitions/ProductHASProductVariant",
+          "$ref": "#/definitions/Product",
+          "type": "object"
+        },
+        "image_id": {
+          "indexed": true,
+          "type": "string"
+        },
+        "inventory_management": {
+          "enum": [
+            "none",
+            "shopify"
+          ],
+          "indexed": true,
+          "type": "string"
+        },
+        "inventory_policy": {
+          "default": "deny",
+          "enum": [
+            "continuar",
+            "deny"
+          ],
+          "type": "string"
+        },
+        "inventory_quantity": {
+          "indexed": true,
+          "type": "integer"
+        },
+        "inventory_rule": {
+          "default": "variant",
+          "enum": [
+            "sku",
+            "variant"
+          ],
+          "type": "string"
+        },
+        "old_inventory_quantity": {
+          "indexed": true,
+          "type": "integer"
+        },
+        "product_id": {
+          "$ref": "#/definitions/ProductVariant/properties/productHas",
+          "default": "",
+          "properties": [
+            "id"
+          ],
+          "type": "object"
+        },
+        "sku": {
+          "indexed": true,
+          "type": "string"
+        },
+        "taxable": {
+          "indexed": true,
+          "type": "boolean"
+        },
+        "title": {
+          "indexed": true,
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "indexed": true,
+          "type": "string"
+        },
+        "weight": {
+          "indexed": true,
+          "type": "integer"
+        },
+        "weight_unit": {
+          "enum": [
+            "g",
+            "kg",
+            "lb",
+            "oz"
+          ],
+          "indexed": true,
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "views": {
+        "ui": [
+          "barcode",
+          "compare_at_price",
+          "created_at",
+          "ext_id",
+          "fulfillment_service",
+          "gift_card",
+          "grams",
+          "image_id",
+          "inventory_management",
+          "inventory_policy",
+          "inventory_quantity",
+          "inventory_rule",
+          "old_inventory_quantity",
+          "product_id",
+          "sku",
+          "taxable",
+          "title",
+          "updated_at",
+          "weight",
+          "weight_unit"
+        ]
+      }
+    },
+    "Province": {
+      "properties": {
+        "hasProvinces": {
+          "$link": "#/definitions/CountryHASProvince",
+          "$ref": "#/definitions/Country",
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "Review": {
+      "$extends": "#/definitions/UserContent",
+      "properties": {
+        "hasReviews": {
+          "$link": "#/definitions/MetaProductHASReview",
+          "$ref": "#/definitions/MetaProduct",
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "Shop": {
+      "properties": {
+        "shopHas": {
+          "$link": "#/definitions/ShopHASCustomer",
+          "items": {
+            "$ref": "#/definitions/Customer"
+          },
+          "type": "array"
+        },
+        "shopHasIn": {
+          "$link": "#/definitions/ShopHASOrder",
+          "items": {
+            "$ref": "#/definitions/Order"
+          },
+          "type": "array"
+        },
+        "shopHasIn1": {
+          "$link": "#/definitions/ShopHASProduct",
+          "items": {
+            "$ref": "#/definitions/Product"
+          },
+          "type": "array"
+        },
+        "shopHasIn12": {
+          "$link": "#/definitions/ShopHASShopEvent",
+          "items": {
+            "$ref": "#/definitions/ShopEvent"
+          },
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "ShopEvent": {
+      "$extends": "#/definitions/LoggedEvent",
+      "properties": {
+        "eventSignature": {
+          "indexed": true,
+          "type": "string"
+        },
+        "hasShopEvents": {
+          "$link": "#/definitions/ShopHASShopEvent",
+          "$ref": "#/definitions/Shop",
+          "type": "object"
+        }
+      },
+      "type": "object",
+      "views": {
+        "ui": [
+          "eventSignature"
+        ]
+      }
+    },
+    "ShopHASCustomer": {
+      "$source": "#/definitions/Shop",
+      "$target": "#/definitions/Customer",
+      "rel": "HAS",
+      "sourceName": "hasCustomers",
+      "targetName": "shopHas",
+      "type": "object"
+    },
+    "ShopHASOrder": {
+      "$source": "#/definitions/Shop",
+      "$target": "#/definitions/Order",
+      "rel": "HAS",
+      "sourceName": "hasOrders",
+      "targetName": "shopHasIn",
+      "type": "object"
+    },
+    "ShopHASProduct": {
+      "$source": "#/definitions/Shop",
+      "$target": "#/definitions/Product",
+      "rel": "HAS",
+      "sourceName": "hasProducts",
+      "targetName": "shopHasIn1",
+      "type": "object"
+    },
+    "ShopHASShopEvent": {
+      "$source": "#/definitions/Shop",
+      "$target": "#/definitions/ShopEvent",
+      "cardinality": "OneToMany",
+      "rel": "HAS",
+      "sourceName": "hasShopEvents",
+      "targetName": "shopHasIn12",
+      "type": "object"
+    },
+    "SmartCollection": {
+      "type": "object"
+    },
+    "TaxCalculation": {
+      "properties": {
+        "price": {
+          "indexed": true,
+          "type": "number"
+        },
+        "rate": {
+          "indexed": true,
+          "type": "number"
+        },
+        "title": {
+          "indexed": true,
+          "type": "string"
+        }
+      },
+      "type": "object",
+      "views": {
+        "ui": [
+          "price",
+          "rate",
+          "title"
+        ]
+      }
+    },
+    "User": {
+      "$extends": "https://structr.org/v1.1/definitions/User",
+      "properties": {
+        "age": {
+          "indexed": true,
+          "type": "integer"
+        },
+        "dateOfBirth": {
+          "format": "date-time",
+          "indexed": true,
+          "type": "string"
+        },
+        "isAwesome": {
+          "indexed": true,
+          "type": "boolean"
+        }
+      },
+      "type": "object",
+      "views": {
+        "default": [
+          "age",
+          "dateOfBirth",
+          "eMail",
+          "isAwesome",
+          "name"
+        ],
+        "ui": [
+          "age",
+          "dateOfBirth",
+          "isAwesome"
+        ]
+      }
+    },
+    "UserContent": {
+      "methods": {
+        "onCreate": {
+          "comment": "This type of user content is visible by default",
+          "source": "(\nset(this, \u0027visibleToPublicUsers\u0027, true),\nset(this, \u0027visibleToAuthenticatedUsers\u0027, true),\n)"
+        }
+      },
+      "properties": {
+        "wroteUserContents": {
+          "$link": "#/definitions/PersonWROTEUserContent",
+          "$ref": "#/definitions/Person",
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "VideoFile": {
+      "$extends": "https://structr.org/v1.1/definitions/VideoFile",
+      "type": "object"
+    },
+    "Widget": {
+      "$extends": "https://structr.org/v1.1/definitions/Widget",
+      "type": "object"
+    },
+    "XMPPClient": {
+      "$extends": "https://structr.org/v1.1/definitions/XMPPClient",
+      "type": "object"
+    }
+  },
+  "id": "https://structr.org/schema/e2acd5311d614dde85ac4d30e290a056/#"
+}
