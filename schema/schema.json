@@ -117,6 +117,7 @@
       "type": "object"
     },
     "Blog": {
+      "$extends": "#/definitions/Metafieldable",
       "properties": {
         "blogHas": {
           "$link": "#/definitions/BlogHASBlogPost",
@@ -244,6 +245,7 @@
       "type": "object"
     },
     "CustomCollection": {
+      "$extends": "#/definitions/Metafieldable",
       "properties": {
         "hasCustomCollections": {
           "$link": "#/definitions/CollectHASCustomCollection",
@@ -310,6 +312,9 @@
       "rel": "PLACED",
       "sourceName": "placedOrders",
       "targetName": "customerPlaced",
+      "type": "object"
+    },
+    "CustomerTag": {
       "type": "object"
     },
     "DataFeed": {
@@ -562,6 +567,7 @@
       "type": "object"
     },
     "MetaProduct": {
+      "$extends": "#/definitions/Metafieldable",
       "properties": {
         "images": {
           "indexed": true,
@@ -643,7 +649,126 @@
       "targetName": "metaProductUses",
       "type": "object"
     },
+    "Metafield": {
+      "properties": {
+        "hasMetafields": {
+          "$link": "#/definitions/MetafieldableHASMetafield",
+          "$ref": "#/definitions/Metafieldable",
+          "type": "object"
+        },
+        "key": {
+          "contentType": "",
+          "default": "",
+          "format": "",
+          "indexed": true,
+          "type": "string"
+        },
+        "namespace": {
+          "contentType": "",
+          "default": "",
+          "format": "",
+          "indexed": true,
+          "type": "string"
+        },
+        "owner_entity": {
+          "$ref": "#/definitions/Metafield/properties/metafieldableHas",
+          "default": "",
+          "indexed": true,
+          "properties": [
+            "id"
+          ],
+          "type": "object"
+        },
+        "owner_type": {
+          "indexed": true,
+          "readFunction": "this.metafieldableHas.type",
+          "type": "function"
+        },
+        "test": {
+          "indexed": true,
+          "readFunction": "get(this.metafieldableHas, \u0027id\u0027)",
+          "type": "function"
+        },
+        "value": {
+          "contentType": "",
+          "default": "",
+          "format": "",
+          "indexed": true,
+          "type": "string"
+        },
+        "value_type": {
+          "contentType": "",
+          "default": "",
+          "enum": [
+            "Boolean",
+            "Float",
+            "Integer",
+            "String"
+          ],
+          "indexed": true,
+          "type": "string"
+        }
+      },
+      "required": [
+        "key",
+        "namespace",
+        "owner_entity",
+        "value"
+      ],
+      "type": "object",
+      "views": {
+        "ui": [
+          "key",
+          "namespace",
+          "owner_entity",
+          "owner_type",
+          "test",
+          "value",
+          "value_type"
+        ]
+      }
+    },
+    "Metafieldable": {
+      "properties": {
+        "metafieldableHas": {
+          "$link": "#/definitions/MetafieldableHASMetafield",
+          "items": {
+            "$ref": "#/definitions/Metafield"
+          },
+          "type": "array"
+        },
+        "metafields": {
+          "indexed": true,
+          "items": {
+            "$ref": "#/definitions/Metafieldable/properties/hasMetafields"
+          },
+          "properties": [
+            "keyProperty",
+            "namespaceProperty",
+            "valueProperty",
+            "value_typeProperty"
+          ],
+          "type": "array"
+        }
+      },
+      "type": "object",
+      "views": {
+        "ui": [
+          "metafields"
+        ]
+      }
+    },
+    "MetafieldableHASMetafield": {
+      "$source": "#/definitions/Metafieldable",
+      "$target": "#/definitions/Metafield",
+      "cardinality": "OneToMany",
+      "rel": "HAS",
+      "sourceName": "hasMetafields",
+      "targetName": "metafieldableHas",
+      "type": "object"
+    },
     "Order": {
+      "$extends": "#/definitions/Metafieldable",
       "properties": {
         "billing_address": {
           "$ref": "#/definitions/Order/properties/hasAddressBilling",
@@ -1401,6 +1526,7 @@
       "type": "object"
     },
     "Person": {
+      "$extends": "#/definitions/Metafieldable",
       "properties": {
         "personWrote": {
           "$link": "#/definitions/PersonWROTEUserContent",
@@ -1769,6 +1895,7 @@
       "type": "object"
     },
     "Shop": {
+      "$extends": "#/definitions/Metafieldable",
       "properties": {
         "shopHas": {
           "$link": "#/definitions/ShopHASCustomer",
@@ -1855,6 +1982,9 @@
       "type": "object"
     },
     "SmartCollection": {
+      "type": "object"
+    },
+    "Tag": {
       "type": "object"
     },
     "TaxCalculation": {
